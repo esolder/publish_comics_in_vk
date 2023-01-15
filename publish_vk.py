@@ -1,9 +1,11 @@
 import os
 import requests
+import time
 from dotenv import load_dotenv
 from urllib.parse import urljoin
 from support_funcs import get_response
 from download_comics import download_random_comics
+
 
 
 API_VERSION = 5.131
@@ -70,16 +72,22 @@ def publish_photo(base_vk_url,
 
 if __name__ == '__main__':
     load_dotenv()
-    CLIENT_ID = os.environ['VK_APP_ID']
     GROUP_ID = os.environ['VK_GROUP_ID']
     ACCESS_TOKEN = os.environ['VK_ACCESS_TOKEN']
 
-    image_path, comment = download_random_comics()
-    upload_url = get_upload_url(BASE_VK_URL, ACCESS_TOKEN, GROUP_ID)
-    server, photo, hash = upload_img(upload_url, image_path)
-    photo_id, owner_id = save_photo(BASE_VK_URL, ACCESS_TOKEN,
-                                    GROUP_ID, server, photo, hash)
-    attachment = 'photo' + str(owner_id) + '_' + str(photo_id)
-    publish_photo(BASE_VK_URL, ACCESS_TOKEN, "-" +
-                  GROUP_ID, comment, attachment)
-    os.remove(image_path)
+    while True:
+        try:
+            image_path, comment = download_random_comics()
+            upload_url = get_upload_url(BASE_VK_URL, ACCESS_TOKEN, GROUP_ID)
+            server, photo, hash = upload_img(upload_url, image_path)
+            photo_id, owner_id = save_photo(BASE_VK_URL, ACCESS_TOKEN,
+                                            GROUP_ID, server, photo, hash)
+            attachment = 'photo' + str(owner_id) + '_' + str(photo_id)
+            publish_photo(BASE_VK_URL, ACCESS_TOKEN, "-" +
+                        GROUP_ID, comment, attachment)
+            os.remove(image_path)
+            break
+        except requests.ConnectionError:
+            print('Connection error. Retrying in 5 seconds')
+            time.sleep(5)
+            continue
