@@ -81,9 +81,9 @@ if __name__ == '__main__':
                                             server, photo, hash_key)
             attachment = f'photo{owner_id}_{photo_id}'
             publish_photo(access_token, f'-{group_id}', comment, attachment)
-            os.remove(image_path)
             break
         except requests.ConnectionError:
             print('Connection error. Retrying in 5 seconds')
             time.sleep(5)
             continue
+        finally: os.remove(image_path)
