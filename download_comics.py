@@ -45,9 +45,3 @@ def download_random_comic(current_url=CURRENT_COMICS_URL, folderpath='img'):
     random_comics_url = f'https://xkcd.com/{random_num}/info.0.json'
     filepath, comment = download_comic(random_comics_url, folderpath)
     return filepath, comment
-
-
-if __name__ == '__main__':
-    COMICS_URL = 'https://xkcd.com/614/info.0.json'
-    print(download_comic(COMICS_URL))
-
