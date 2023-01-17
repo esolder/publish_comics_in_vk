@@ -3,7 +3,7 @@ import requests
 import time
 from dotenv import load_dotenv
 from urllib.parse import urljoin
-from download_comics import download_random_comics
+from download_comics import download_random_comic
 
 
 
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     while True:
         try:
-            image_path, comment = download_random_comics()
+            image_path, comment = download_random_comic()
             upload_url = get_upload_url(BASE_VK_URL, ACCESS_TOKEN, GROUP_ID)
             server, photo, hash = upload_img(upload_url, image_path)
             photo_id, owner_id = save_photo(BASE_VK_URL, ACCESS_TOKEN,
