@@ -21,7 +21,7 @@ def download_photo(url, folderpath):
 
 def get_filename(url):
     path = urllib.parse.urlsplit(url).path
-    filepath, filename = os.path.split(path)
+    _, filename = os.path.split(path)
     return filename
 
 
