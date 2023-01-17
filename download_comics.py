@@ -6,9 +6,11 @@ from random import randint
 
 CURRENT_COMICS_URL = 'https://xkcd.com/info.0.json'
 
+def create_folder(folderpath):
+    os.makedirs(folderpath, exist_ok=True)
+
 
 def download_photo(url, folderpath):
-    os.makedirs(folderpath, exist_ok=True)
     response = requests.get(url)
     response.raise_for_status()
     filepath = os.path.join(folderpath, get_filename(url))
@@ -27,6 +29,7 @@ def download_comics(url, folderpath='img'):
     response = requests.get(url)
     response.raise_for_status()
     comics = response.json()
+    create_folder(folderpath)
     file = download_photo(comics['img'], folderpath)
     return file, comics['alt']
 
