@@ -30,8 +30,8 @@ def download_comic(url, folderpath='img'):
     response.raise_for_status()
     comic = response.json()
     create_folder(folderpath)
-    file = download_photo(comic['img'], folderpath)
-    return file, comic['alt']
+    filepath = download_photo(comic['img'], folderpath)
+    return filepath, comic['alt']
 
 
 def get_current_num(current_url):
@@ -43,8 +43,8 @@ def get_current_num(current_url):
 def download_random_comic(current_url=CURRENT_COMICS_URL, folderpath='img'):
     random_num = randint(1, get_current_num(current_url))
     random_comics_url = f'https://xkcd.com/{random_num}/info.0.json'
-    file, comment = download_comic(random_comics_url, folderpath)
-    return file, comment
+    filepath, comment = download_comic(random_comics_url, folderpath)
+    return filepath, comment
 
 
 if __name__ == '__main__':
