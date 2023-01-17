@@ -23,8 +23,8 @@ def get_upload_url(access_token, group_id, api_version=API_VERSION):
 def upload_img(upload_url, image_path):
     with open(image_path, 'rb') as photo:
         files = {'photo': photo}
-    response = requests.post(upload_url, files=files)
-    response.raise_for_status()
+        response = requests.post(upload_url, files=files)
+        response.raise_for_status()
     upload_metadata = response.json()
     return upload_metadata['server'], upload_metadata['photo'], upload_metadata['hash']
 
