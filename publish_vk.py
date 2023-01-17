@@ -25,8 +25,8 @@ def upload_img(upload_url, image_path):
         files = {'photo': photo}
     response = requests.post(upload_url, files=files)
     response.raise_for_status()
-    json_object = response.json()
-    return json_object['server'], json_object['photo'], json_object['hash']
+    upload_metadata = response.json()
+    return upload_metadata['server'], upload_metadata['photo'], upload_metadata['hash']
 
 
 def save_photo(access_token,
