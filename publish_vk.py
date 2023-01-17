@@ -79,8 +79,8 @@ if __name__ == '__main__':
             server, photo, hash_key = upload_img(upload_url, image_path)
             photo_id, owner_id = save_photo(access_token, group_id, 
                                             server, photo, hash_key)
-            attachment = 'photo' + str(owner_id) + '_' + str(photo_id)
-            publish_photo(access_token, "-" + group_id, comment, attachment)
+            attachment = f'photo{owner_id}_{photo_id}'
+            publish_photo(access_token, f'-{group_id}', comment, attachment)
             os.remove(image_path)
             break
         except requests.ConnectionError:
