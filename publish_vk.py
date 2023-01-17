@@ -69,18 +69,18 @@ def publish_photo(access_token,
 
 if __name__ == '__main__':
     load_dotenv()
-    GROUP_ID = os.environ['VK_GROUP_ID']
-    ACCESS_TOKEN = os.environ['VK_ACCESS_TOKEN']
+    group_id = os.environ['VK_GROUP_ID']
+    access_token = os.environ['VK_ACCESS_TOKEN']
 
     while True:
         try:
             image_path, comment = download_random_comic()
-            upload_url = get_upload_url(ACCESS_TOKEN, GROUP_ID)
+            upload_url = get_upload_url(access_token, group_id)
             server, photo, hash_key = upload_img(upload_url, image_path)
-            photo_id, owner_id = save_photo(ACCESS_TOKEN, GROUP_ID, 
+            photo_id, owner_id = save_photo(access_token, group_id, 
                                             server, photo, hash_key)
             attachment = 'photo' + str(owner_id) + '_' + str(photo_id)
-            publish_photo(ACCESS_TOKEN, "-" + GROUP_ID, comment, attachment)
+            publish_photo(access_token, "-" + group_id, comment, attachment)
             os.remove(image_path)
             break
         except requests.ConnectionError:
