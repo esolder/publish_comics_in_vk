@@ -3,7 +3,6 @@ import requests
 import time
 from dotenv import load_dotenv
 from urllib.parse import urljoin
-from support_funcs import get_response
 from download_comics import download_random_comics
 
 
@@ -20,7 +19,8 @@ def get_upload_url(base_vk_url,
     params = {'access_token': access_token,
               'group_id': group_id,
               'v': api_version}
-    response = get_response(urljoin(base_vk_url, path), params)
+    response = requests.get(urljoin(base_vk_url, path), params)
+    response.raise_for_status()
     return response.json()['response']['upload_url']
 
 
@@ -48,7 +48,8 @@ def save_photo(base_vk_url,
               'hash': hash,
               'group_id': group_id,
               'v': api_version}
-    response = get_response(urljoin(base_vk_url, path), params)
+    response = requests.get(urljoin(base_vk_url, path), params)
+    response.raise_for_status()
     photo = response.json()['response'][0]
     return photo['id'], photo['owner_id']
 
@@ -67,7 +68,8 @@ def publish_photo(base_vk_url,
               'from_group': from_group,
               'attachments': attachments,
               'v': api_version}
-    get_response(urljoin(base_vk_url, path), params)
+    response = requests.get(urljoin(base_vk_url, path), params)
+    response.raise_for_status()
 
 
 if __name__ == '__main__':
