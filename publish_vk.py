@@ -33,14 +33,14 @@ def save_photo(access_token,
                group_id,
                server,
                photo,
-               hash,
+               hash_key,
                api_version=API_VERSION):
     base_vk_url = 'https://api.vk.com/method/'
     path = 'photos.saveWallPhoto'
     params = {'access_token': access_token,
               'server': server,
               'photo': photo,
-              'hash': hash,
+              'hash': hash_key,
               'group_id': group_id,
               'v': api_version}
     response = requests.get(urljoin(base_vk_url, path), params)
@@ -76,9 +76,9 @@ if __name__ == '__main__':
         try:
             image_path, comment = download_random_comic()
             upload_url = get_upload_url(ACCESS_TOKEN, GROUP_ID)
-            server, photo, hash = upload_img(upload_url, image_path)
+            server, photo, hash_key = upload_img(upload_url, image_path)
             photo_id, owner_id = save_photo(ACCESS_TOKEN, GROUP_ID, 
-                                            server, photo, hash)
+                                            server, photo, hash_key)
             attachment = 'photo' + str(owner_id) + '_' + str(photo_id)
             publish_photo(ACCESS_TOKEN, "-" + GROUP_ID, comment, attachment)
             os.remove(image_path)
