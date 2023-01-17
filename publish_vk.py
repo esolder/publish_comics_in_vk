@@ -21,13 +21,12 @@ def get_upload_url(access_token, group_id, api_version=API_VERSION):
 
 
 def upload_img(upload_url, image_path):
-    path = 'photos.saveWallPhoto'
     with open(image_path, 'rb') as photo:
         files = {'photo': photo}
-        response = requests.post(upload_url, files=files)
-        response.raise_for_status()
-        json_object = response.json()
-        return json_object['server'], json_object['photo'], json_object['hash']
+    response = requests.post(upload_url, files=files)
+    response.raise_for_status()
+    json_object = response.json()
+    return json_object['server'], json_object['photo'], json_object['hash']
 
 
 def save_photo(access_token,
