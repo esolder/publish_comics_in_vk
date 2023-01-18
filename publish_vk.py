@@ -1,6 +1,5 @@
 import os
 import requests
-import time
 from dotenv import load_dotenv
 from urllib.parse import urljoin
 from download_comics import download_random_comic
@@ -25,8 +24,8 @@ def upload_img(upload_url, image_path):
         files = {'photo': photo}
         response = requests.post(upload_url, files=files)
     response.raise_for_status()
-    upload_metadata = response.json()
-    return upload_metadata['server'], upload_metadata['photo'], upload_metadata['hash']
+    upload = response.json()
+    return upload['server'], upload['photo'], upload['hash']
 
 
 def save_photo(access_token,
@@ -71,7 +70,7 @@ if __name__ == '__main__':
     load_dotenv()
     group_id = os.environ['VK_GROUP_ID']
     access_token = os.environ['VK_ACCESS_TOKEN']
-    
+
     folderpath = 'img'
     os.makedirs(folderpath, exist_ok=True)
 
@@ -79,8 +78,9 @@ if __name__ == '__main__':
         image_path, comment = download_random_comic(folderpath=folderpath)
         upload_url = get_upload_url(access_token, group_id)
         server, photo, hash_key = upload_img(upload_url, image_path)
-        photo_id, owner_id = save_photo(access_token, group_id, 
+        photo_id, owner_id = save_photo(access_token, group_id,
                                         server, photo, hash_key)
         attachment = f'photo{owner_id}_{photo_id}'
         publish_photo(access_token, f'-{group_id}', comment, attachment)
-    finally: os.remove(image_path)
+    finally:
+        os.remove(image_path)
