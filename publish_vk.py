@@ -3,7 +3,7 @@ import requests
 import time
 from dotenv import load_dotenv
 from urllib.parse import urljoin
-from download_comics import download_random_comic
+from download_comics import download_random_comic, create_folder
 
 
 API_VERSION = 5.131
@@ -71,8 +71,9 @@ if __name__ == '__main__':
     load_dotenv()
     group_id = os.environ['VK_GROUP_ID']
     access_token = os.environ['VK_ACCESS_TOKEN']
-
-    image_path, comment = download_random_comic()
+    
+    folderpath = create_folder()
+    image_path, comment = download_random_comic(folderpath=folderpath)
     upload_url = get_upload_url(access_token, group_id)
     server, photo, hash_key = upload_img(upload_url, image_path)
     photo_id, owner_id = save_photo(access_token, group_id, 
