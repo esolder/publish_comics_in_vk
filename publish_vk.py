@@ -75,11 +75,12 @@ if __name__ == '__main__':
     folderpath = 'img'
     os.makedirs(folderpath, exist_ok=True)
 
-    image_path, comment = download_random_comic(folderpath=folderpath)
-    upload_url = get_upload_url(access_token, group_id)
-    server, photo, hash_key = upload_img(upload_url, image_path)
-    photo_id, owner_id = save_photo(access_token, group_id, 
-                                    server, photo, hash_key)
-    attachment = f'photo{owner_id}_{photo_id}'
-    publish_photo(access_token, f'-{group_id}', comment, attachment)
-    os.remove(image_path)
+    try:
+        image_path, comment = download_random_comic(folderpath=folderpath)
+        upload_url = get_upload_url(access_token, group_id)
+        server, photo, hash_key = upload_img(upload_url, image_path)
+        photo_id, owner_id = save_photo(access_token, group_id, 
+                                        server, photo, hash_key)
+        attachment = f'photo{owner_id}_{photo_id}'
+        publish_photo(access_token, f'-{group_id}', comment, attachment)
+    finally: os.remove(image_path)
